@@ -52,6 +52,7 @@ class Preprocessing:
         """
         A Function that check entry input and then validate it.
         Param:: json_input: A dictionary
+        Param:: self
         """
 
         for feauture in self.model_dict.keys():
