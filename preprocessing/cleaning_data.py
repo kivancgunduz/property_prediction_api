@@ -2,10 +2,14 @@
 
 class Preprocessing:
     """
-
+    A class that operate all preprocessing operations before the prediction operations
     """
 
     def __init__(self) -> None:
+        """
+        A function that defines construction varaibles.
+
+        """
         self.model_dict = model_dict = {
             "Living area": {'type': int,'optional':False,'default': []},
             "Bedroom": {'type': int, 'optional': False, 'default': []},
@@ -47,6 +51,7 @@ class Preprocessing:
     def preprocess(self, json_input: dict):
         """
         A Function that check entry input and then validate it.
+        Param:: json_input: A dictionary
         """
 
         for feauture in self.model_dict.keys():
