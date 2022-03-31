@@ -2,12 +2,12 @@
 
 class Preprocessing:
     """
-    A class that operate all preprocessing operations before the prediction operations
+    A class that operate all preprocessing operations before the prediction operations.
     """
 
     def __init__(self) -> None:
         """
-        A function that defines construction varaibles.
+        A function that initialize the class.
 
         """
         self.model_dict = model_dict = {
@@ -50,9 +50,10 @@ class Preprocessing:
 
     def preprocess(self, json_input: dict):
         """
-        A Function that check entry input and then validate it.
-        Param:: json_input: A dictionary
-        Param:: self
+        A Function that check entry input and preprocess it.
+        param: json_input: a json object that contains the input data.
+        param: model_dict: a dictionary that contains the model parameters.
+        return: a json object that contains the preprocessed data.
         """
 
         for feauture in self.model_dict.keys():
