@@ -1,4 +1,7 @@
-
+import os
+import json
+import jsonschema
+from jsonschema import validate
 
 class Preprocessing:
     """
@@ -8,74 +11,61 @@ class Preprocessing:
     def __init__(self) -> None:
         """
         A function that initialize the class.
-
         """
-        self.model_dict = model_dict = {
-            "Living area": {'type': int,'optional':False,'default': []},
-            "Bedroom": {'type': int, 'optional': False, 'default': []},
-            "Province": {
-                'type': str,
-                'optional': False,
-                'default': [
-                    'Brussels', 'Oost-vlaanderen', 'Vlaams-brabant', 'Luik', 'Namen',
-                    'Luxemburg', 'West-vlaanderen', 'Antwerpen', 'Henegouwen',
-                    'Waals-brabant', 'Limburg']},
-            "Property Type": {'type': str, 'optional': False, 'default': ['Apartment','House']},
-            "Property Subtype": {
-                'type': str,
-                'optional': True,
-                'default': [
-                    'Apartment', 'Town-house', 'House', 'Villa', 'Penthouse',
-                    'Mansion', 'Studio', 'Exceptional property', 'Kot', 'Duplex',
-                    'Triplex', 'Ground floor', 'Bungalow', 'Loft', 'Chalet',
-                    'Service flat', 'Castle', 'Farmhouse', 'Country house',
-                    'Manor house', 'Other properties']
-                },
-            "Surface of the plot": {'type': int, 'optional': True, 'default': []},
-            "HasGarden": {'type': str, 'optional': True, 'default': ['Yes','No']},
-            "Garden surface": {'type': int, 'optional': True, 'default': []},
-            "Kitchen Type": {
-                'type': str,
-                'optional': True,
-                'default': ['Equipped', 'Semi-equipped', 'Not installed']},
-            "Swimming pool": {'type': str, 'optional': True, 'default': ['Yes','No']},
-            "Furnished": {'type': str, 'optional': True, 'default': ['Yes','No']},
-            "HasFireplace": {'type': str, 'optional': True, 'default': ['Yes','No']},
-            "HasTerrace": {'type': str, 'optional': True, 'default': ['Yes','No']},
-            "Terrace surface": {'type': int, 'optional': True, 'default': []},
-            "Number of frontages": {'type': int, 'optional': True, 'default': []},
-            "Building condition": {'type': str, 'optional': True, 'default': ['As new','Good','To renovate']}
-    }
+        self.schema: dict = {}
+        self.schema_path: str = 'data/schema.json'
+        self.dataset_path: str = 'data/dataset.csv'
+        
+    
     
 
     def preprocess(self, json_input: dict):
         """
-        A Function that check entry input and preprocess it.
-        param: json_input: a json object that contains the input data.
-        param: model_dict: a dictionary that contains the model parameters.
-        return: a json object that contains the preprocessed data.
+        A function that preprocess the json input.
+
+        :param json_input: A dictionary that contains the input data.
+        :return: A dictionary that contains the preprocessed data.
         """
+        # Load the schema if the file is exist.
+        if (os.path.exists(self.schema_path)):
+            self.schema = self.convert_json_file(self.schema_path)
+        else:
+            print("The schema file does not exist.")
+        
+        # Validate the input data.
 
-        for feauture in self.model_dict.keys():
-            if not self.model_dict[feauture]['optional']:
-                if feauture not in json_input.keys():
-                    raise ValueError(f'The feauture {feauture} is missing!')
+        
+    @staticmethod
+    def save_json_file(json_input: dict, file_name: str):
+        """
+        A function that save the json file.
 
-        valid_data = json_input.copy()
-        for feature, value in json_input.items():
-            if feature not in self.model_dict.keys():
-                raise ValueError(f'{feature} is not a valid entry')
-            if type(value) != self.model_dict[feature]['type']:
-                raise ValueError(f'{feature}:{value} of {type(value)} should be {self.model_dict[feature]["type"]}')
-            if self.model_dict[feature]['type'] == str and len(self.model_dict[feature]['default'])>0:
-                if value not in self.model_dict[feature]['default']:
-                    raise ValueError(f'Possible entries for {feature} are {self.model_dict[feature]["default"]}')
-                else:
-                    #convert data
-                    valid_data[f"{feature}_{value}"] = 1
-                    del valid_data[feature]
+        :param json_input: A dictionary that contains the input data.
+        :param file_name: A string that contains the file name.
+        :return: A dictionary that contains the preprocessed data.
+        """
+        try:
+            with open(file_name, 'w+') as f:
+                json.dump(json_input, f)
+                return True
+        except Exception as e:
+            print(e)
+            return False
+    
+    @staticmethod
+    def convert_json_file(file_path: str):
+        """
+        A function that convert the json file to a dictionary.
 
-        return [valid_data]
+        :param file_path: A string that contains the file name.
+        :return: A dictionary that contains expected json schema.
+        """
+        try:
+            with open(file_path, 'r') as f:
+                return json.load(f)
+        except Exception as e:
+            print(e)
+            return False
         
 
     
