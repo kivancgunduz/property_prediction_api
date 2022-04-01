@@ -1,5 +1,6 @@
 import os
 import json
+import pandas as pd
 import jsonschema
 from jsonschema import validate
 
@@ -15,6 +16,8 @@ class Preprocessing:
         self.schema: dict = {}
         self.schema_path: str = 'data/schema.json'
         self.dataset_path: str = 'data/dataset.csv'
+        self.dataframe: pd.DataFrame = pd.DataFrame()
+        
         
     
     
@@ -26,13 +29,13 @@ class Preprocessing:
         :param json_input: A dictionary that contains the input data.
         :return: A dictionary that contains the preprocessed data.
         """
-        # Load the schema if the file is exist.
-        if (os.path.exists(self.schema_path)):
-            self.schema = self.convert_json_file(self.schema_path)
-        else:
-            print("The schema file does not exist.")
         
         # Validate the input data.
+        try:
+            validate(json_input, self.schema)
+        except jsonschema.exceptions.ValidationError as e:
+            print(e)
+            return False
 
         
     @staticmethod
@@ -51,7 +54,7 @@ class Preprocessing:
         except Exception as e:
             print(e)
             return False
-    
+            
     @staticmethod
     def convert_json_file(file_path: str):
         """
@@ -66,6 +69,30 @@ class Preprocessing:
         except Exception as e:
             print(e)
             return False
+    
+    def check_necessery_files(self) -> bool:
+        """
+        A function that check the necessary files.
+
+        :return: A boolean that indicates whether the necessary files are exist.
+        """
+        try:
+                # Load the schema if the file is exist.
+            if (os.path.exists(self.schema_path)):
+                self.schema = self.convert_json_file(self.schema_path)
+            else:
+                print("The schema file does not exist.")
+            # Load the dataset if the file is exist.
+            if (os.path.exists(self.dataset_path)):
+                self.dataframe = pd.read_csv(self.dataset_path)
+            else:
+                self.dataframe = pd.read_csv('https://raw.githubusercontent.com/kivancgunduz/challenge-regression/main/data/cleaned_data.csv')
+                print("The dataset file does not exist.")
+            return True
+        except:
+            print("The necessary files are not exist.")
+            return False
+    
         
 
     

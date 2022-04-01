@@ -24,7 +24,36 @@ class Model():
         A Function that check the dataset file.
         """
         pass
-    
+
+    def create_model_file(self):
+        """
+        A Function that create a model file.
+        """
+        df = self.df
+        y = df["Price"]
+        X = df.drop(["Price"], axis=1)
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y , test_size=0.2, random_state=0)
+        scaler = StandardScaler()
+        scaler.fit(X_train)
+        features_scal = scaler.transform(X_train)
+
+
+        regressor = LinearRegression()
+        regressor.fit(X_train, y_train)
+        print(regressor.score(X_train, y_train))
+
+
+        predict = regressor.predict(X_train)
+        print(regressor.score(X_test, y_test))
+
+        joblib.dump(regressor, "model/model.pkl")
+
+        model_columns = list(X.columns)
+
+        joblib.dump(model_columns, "model/model_columns.pkl")
+        print(X.columns)
+
     def manipulate_dataset(self):
         """
         A Function that manipulate the dataset.
@@ -37,11 +66,7 @@ class Model():
         """
         pass
 
-    def create_model_file(self):
-        """
-        A Function that create a model file.
-        """
-        pass
+    
 
     def check_performance(self):
         """
