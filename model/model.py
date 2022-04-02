@@ -37,11 +37,15 @@ class Model():
         scaler.fit(X_train)
         features_scal = scaler.transform(X_train)
 
+
         regressor = LinearRegression()
         regressor.fit(X_train, y_train)
         print(regressor.score(X_train, y_train))
+
+
         predict = regressor.predict(X_train)
         print(regressor.score(X_test, y_test))
+
         joblib.dump(regressor, "model/model.pkl")
 
         model_columns = list(X.columns)
@@ -59,6 +63,8 @@ class Model():
         A Function that train the model.
         """
         pass
+
+    
 
     def check_performance(self):
         """

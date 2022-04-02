@@ -70,6 +70,32 @@ class Preprocessing:
     def check_necessery_files(self) -> bool:
         """
         A function that check the necessary files.
+
+        :return: A boolean that indicates whether the necessary files are exist.
+        """
+        try:
+                # Load the schema if the file is exist.
+            if (os.path.exists(self.schema_path)):
+                self.schema = self.convert_json_file(self.schema_path)
+            else:
+                print("The schema file does not exist.")
+            # Load the dataset if the file is exist.
+            if (os.path.exists(self.dataset_path)):
+                self.dataframe = pd.read_csv(self.dataset_path)
+            else:
+                self.dataframe = pd.read_csv('https://raw.githubusercontent.com/kivancgunduz/challenge-regression/main/data/cleaned_data.csv')
+                print("The dataset file does not exist.")
+            return True
+        except:
+            print("The necessary files are not exist.")
+            return False
+    
+        
+
+    
+    def check_necessery_files(self) -> bool:
+        """
+        A function that check the necessary files.
         :return: A boolean that indicates whether the necessary files are exist.
         """
         try:

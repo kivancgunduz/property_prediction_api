@@ -14,12 +14,6 @@ class Prediction:
         pass
     
     def predict(self, ready_df: pd.DataFrame) -> dict:
-        """
-        A function that predict the price.
-        
-        :param ready_df: A dataframe that contains the ready data.
-        :return: A dictionary that contains the prediction.
-        """
         try:
             model = pickle.load(open('./model/model.pkl', 'rb'))
             prediction_price = int(model.predict(self.df)[0])
