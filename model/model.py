@@ -16,51 +16,34 @@ class Model():
     """
     A class that manage the model. 
     """
-    def _init_(self) -> None:
+    def __init__(self) -> None:
         """
         A function that initialize the class.
         """
+        self.df = pd.read_csv("data/raw_data.csv")
+        self.model_name:str = "model.pkl"
+        self.model_column_name:str = "model_columns.pkl"
+        self.poly_feature_name:str = "poly_features.pkl"
+        self.model_path:str = Path("./model/").joinpath(self.model_name)
+        self.poly_features_model_path:str = Path("./model/").joinpath(self.poly_feature_name)
+        self.model_column_path:str = Path("./model/").joinpath(self.model_column_name)
+        
 
-    def check_dataset_file(self):
+    def check_model_not_exist(self):
         """
-        A Function that check the dataset file.
+        A Function that check the model file is exist or not. If not exist, create a new model file.
         """
-        pass
-    def create_model_file(self):
-        """
-        A Function that create a model file.
-        """
-        df = self.df
-        y = df["Price"]
-        X = df.drop(["Price"], axis=1)
-
-        X_train, X_test, y_train, y_test = train_test_split(X, y , test_size=0.2, random_state=0)
-        scaler = StandardScaler()
-        scaler.fit(X_train)
-        features_scal = scaler.transform(X_train)
-
-
-        regressor = LinearRegression()
-        regressor.fit(X_train, y_train)
-        print(regressor.score(X_train, y_train))
-
-
-        predict = regressor.predict(X_train)
-        print(regressor.score(X_test, y_test))
-
-        joblib.dump(regressor, "model/model.pkl")
-
-        model_columns = list(X.columns)
-
-        joblib.dump(model_columns, "model/model_columns.pkl")
-        print(X.columns)
+        if not (os.path.exists(self.model_path)):
+            self.train_model()
+        else:
+            print("Model already exist.")
     
     def manipulate_dataset(self):
         """
         A Function that manipulate the dataset.
         """
         
-        raw_data = pd.read_csv('./data/raw_data.csv')
+        raw_data: pd.DataFrame = self.df
 
         # Remove Unexpected rows
         raw_data.drop(raw_data[raw_data['Price'] == 'None' ].index, inplace=True)
@@ -75,9 +58,6 @@ class Model():
         # Price 
         raw_data['Price'] = raw_data['Price'].str.replace(',','')
         raw_data['Price'] = raw_data['Price'].astype(np.int64)
-        #print(raw_data.Price.mean())
-
-        #print(raw_data.dtypes)
 
         #Bedrooms
         raw_data[raw_data['Type of property'] =='flat-studio']['Bedrooms'].all = 0
@@ -85,8 +65,6 @@ class Model():
         raw_data["Bedrooms"] = raw_data['Bedrooms'].astype(int)
 
         # Living Area 
-
-        #print(raw_data[raw_data["Living area"] == "None"].value_counts().sum())
         raw_data.drop(raw_data[raw_data["Living area"] == "None"].index, inplace=True)
         raw_data["Living area"] = raw_data["Living area"].astype(int)
 
@@ -186,9 +164,38 @@ class Model():
         """
         A Function that train the model.
         """
+        df = pd.read_csv('./data/dataset.csv')
+        
+        y = df["price"]
+        X = df.drop(["price"], axis=1)
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y , test_size=0.2, random_state=0)
+        scaler = StandardScaler()
+        scaler.fit(X_train)
+        features_scal = scaler.transform(X_train)
+
+
+        regressor = LinearRegression()
+        regressor.fit(X_train, y_train)
+        print(regressor.score(X_train, y_train))
+
+
+        predict = regressor.predict(X_train)
+        print(regressor.score(X_test, y_test))
+
+        joblib.dump(regressor, "model/model.pkl")
+
+        model_columns = list(X.columns)
+
+        joblib.dump(model_columns, "model/model_columns.pkl")
+        print(X.columns)
+
+    def create_model_file(self):
+        """
+        A Function that create a model file.
+        """
         pass
 
-    
 
     def check_performance(self):
         """
@@ -198,4 +205,4 @@ class Model():
 
 
 model = Model()
-model.manipulate_dataset()
+model.train_model()
