@@ -13,4 +13,4 @@ WORKDIR /app
 RUN pip install -r requirements.txt
 
 # Run app 
-CMD python api.py
+CMD python app.py
