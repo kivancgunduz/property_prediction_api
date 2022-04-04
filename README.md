@@ -5,12 +5,12 @@ An API published by [@kivancgunduz](https://www.linkedin.com/in/kivancgunduz35/)
 
 #### Specification
 ```
+- Ubuntu 18.04
 - Pyhton 3.8
 - Flask
 - Docker
 - Heroku
 - Scikit-learn
-
 ```
 
 #### Endpoints
@@ -26,8 +26,6 @@ An API published by [@kivancgunduz](https://www.linkedin.com/in/kivancgunduz35/)
 - ` cd property_prediction_api`
 - ` pip install -r requirements.txt`
 - ` python app.py`
-
-
 
 #### Project Information
 
