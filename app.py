@@ -3,7 +3,7 @@ import os
 
 
 from flask import Flask
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Blueprint
 from sklearn import preprocessing
 
 from predict.prediction import Prediction
@@ -11,7 +11,10 @@ from preprocessing.cleaning_data import Preprocessing
 
 
 app = Flask(__name__)
-app.env = 'development'
+#app.env = 'development'
+
+blueprint = Blueprint('api', __name__)
+
 preprocessing = Preprocessing()
 prediction = Prediction()
 
@@ -26,30 +29,8 @@ def welcome():
 def post_request():
     """
     A function that will inform the user about the expected json schema.
-    """
-    json_schema = """
-    {
-        "input": {
-                    "post_code": {"type": "int", "required": true, default: []},
-                    "kitchen_type": {
-                        "type": str,
-                        "optional": True,
-                        "default": ["Not installed", "Semi equipped", "Equipped"],
-                        },
-                    "bedroom": {"type": int, "required": True, "default": []},
-                    "surface_plot": {"type": int, "optional": True, "default": []},
-                    "living_area": {"type": int, "required": True, "default": []},
-                    "swimming_pool": {"type": str, "optional": True, "default": ["Yes", "No"]},
-                    "property_type": {
-                        "type": str,
-                        "required": True,
-                        "default": ["APARTMENT", "HOUSE"],
-                        }
-                }
-        }
-        """
-            
-    return jsonify({'message': json_schema}), 200
+    """       
+    return jsonify({'message': preprocessing.convert_json_file()}), 200
 
 @app.route('/predict', methods=['POST'])
 def get_predict():
@@ -63,7 +44,8 @@ def get_predict():
     else:
         predictable_df = preprocessing.preprocess(input_data)
         prediction_result = prediction.predict(predictable_df)
-        return jsonify(prediction_result), 200
+        return jsonify({"Prediction": prediction_result }), 200
 
 if __name__ == '__main__':
-    app.run()
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=False, port=port)
