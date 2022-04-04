@@ -11,9 +11,7 @@ from preprocessing.cleaning_data import Preprocessing
 
 
 app = Flask(__name__)
-#app.env = 'development'
 
-blueprint = Blueprint('api', __name__)
 
 preprocessing = Preprocessing()
 prediction = Prediction()
@@ -38,8 +36,7 @@ def get_predict():
     A function that will get the prediction from the input data.
     """
     input_data = request.get_json()
-    print(input_data)
-    if input_data == "" or input_data == None:
+    if len(dict(input_data)) == 0:
         return jsonify({"error": "No input data provided"}), 400
     else:
         predictable_df = preprocessing.preprocess(input_data)
@@ -47,5 +44,5 @@ def get_predict():
         return jsonify({"Prediction": prediction_result }), 200
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(debug=False, port=port)
+    port = os.environ.get("PORT", 5000)
+    app.run(host="0.0.0.0", port=port, debug=False)
