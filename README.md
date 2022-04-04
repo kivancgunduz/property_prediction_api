@@ -12,9 +12,6 @@ An API published by [@kivancgunduz](https://www.linkedin.com/in/kivancgunduz35/)
 - Heroku
 - Scikit-learn
 ```
-<img src="https://media.giphy.com/media/kdiLau77NE9Z8vxGSO/giphy.gif">
-
-
 #### Endpoints
 
 - GET /
@@ -28,6 +25,8 @@ An API published by [@kivancgunduz](https://www.linkedin.com/in/kivancgunduz35/)
 - ` cd property_prediction_api`
 - ` pip install -r requirements.txt`
 - ` python app.py`
+
+<img src="https://media.giphy.com/media/kdiLau77NE9Z8vxGSO/giphy.gif">
 
 #### Project Information
 
