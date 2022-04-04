@@ -12,6 +12,8 @@ An API published by [@kivancgunduz](https://www.linkedin.com/in/kivancgunduz35/)
 - Heroku
 - Scikit-learn
 ```
+<img src="https://media.giphy.com/media/kdiLau77NE9Z8vxGSO/giphy.gif">
+
 
 #### Endpoints
 
@@ -37,3 +39,6 @@ An API published by [@kivancgunduz](https://www.linkedin.com/in/kivancgunduz35/)
 
 <img src="./assets/docker.png" width="100" height="100"> <img src="./assets/api.png" width="100" height="100"> <img src="./assets/heroku.png" width="100" height="100"> <img src="./assets/flask.png" height="100"> <img src="./assets/scikit-learn.png" height="100">
     
+
+
+
