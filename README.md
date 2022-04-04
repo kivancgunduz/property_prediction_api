@@ -37,5 +37,5 @@ An API published by [@kivancgunduz](https://www.linkedin.com/in/kivancgunduz35/)
 
 #### Technologies
 
-<img src="./assets/python.png"> <img src="./assets/docker.png"> <img src="./assets/api.png"> <img src="./assets/heroku.png"> 
+<img src="./assets/python.png" width="100" height="100"> <img src="./assets/docker.png" width="100" height="100"> <img src="./assets/api.png" width="100" height="100"> <img src="./assets/heroku.png" width="100" height="100"> <img src="./assets/flask.png" height="100"> <img src="./assets/scikit-learn.png" height="100">
     
